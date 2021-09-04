@@ -1,23 +1,29 @@
 const express = require('express');
-const Campsite = require('../models/campsite')
+const Campsite = require('../models/campsite');
 
 const campsiteRouter = express.Router();
 
+// this is the endpoint
+// www.nucampsite.com or www.nucampsite/.com
 campsiteRouter.route('/')
 .get((req, res, next) => {
-  Campsite.find()
-  .then(campsites => {
+  Campsite.find() // mongoose method to find all the documents within the campsite collection
+  // a mogoose method will always return a promise this is indicated by .then() and .catch()
+  .then(campsites => { // if user makes get request to url /
+    // and mongoose is able to get a reply back from database then do everyhting inside .then method
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.json(campsites);
   })
-  .catch(err => next(err));
+  .catch(err => next(err)); // otherwise we serve the user our error handler function in app.js
 })
 .post((req, res, next) => {
-  Campsite.create(req.body)
-  .then(campsite => {
+  Campsite.create(req.body) // using mongoose method and passing in req.body
+  // req.body would not work if you dont have body-parser middleware
+  .then(campsite => { // if we are able to succefully create a campsite we respond with 
+    // all the stements 
     console.log('Campsite Created ', campsite);
-    res. statusCode = 200;
+    res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.json(campsite);
   })
@@ -62,7 +68,7 @@ campsiteRouter.route('/:campsiteId')
   })
   .catch(err => next(err));
 })
-.delete((req, res) => {
+.delete((req, res, next) => {
   Campsite.findByIdAndDelete(req.params.campsiteId)
   .then(response => {
     res.statusCode = 200;
