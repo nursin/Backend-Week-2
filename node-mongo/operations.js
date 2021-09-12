@@ -1,5 +1,7 @@
+// methods for working with database
 exports.insertDocument = (db, document, collection) => {
   const coll = db.collection(collection);
+  // node driver method insertOne returns a promise if callback not specified
   return coll.insertOne(document);
 };
 
