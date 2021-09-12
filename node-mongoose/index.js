@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
-const Campsite = require('./models/campsite');
+const Campsite = require('./models/campsite'); // import model Campsite
 
 const url = 'mongodb://localhost:27017/nucampsite';
+
+// connect to mongodb with added function compared with mongoclient driver
 const connect = mongoose.connect(url, {
   useCreateIndex: true,
   useFindAndModify: false,
@@ -23,7 +25,7 @@ connect.then(() => {
     return Campsite.findByIdAndUpdate(campsite._id, {
       $set: { descriptions: 'Updated Test Document'}
     }, {
-      new: true
+      new: true // causes this method to return the updated document otherwise will return the old docuent
     });
   })
   .then(campsite => {
